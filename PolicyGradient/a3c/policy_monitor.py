@@ -21,6 +21,7 @@ from lib.atari import helpers as atari_helpers
 from estimators import ValueEstimator, PolicyEstimator
 from worker import make_copy_params_op
 
+f_reward= open("reward.txt","w+")
 
 class PolicyMonitor(object):
   """
@@ -94,6 +95,8 @@ class PolicyMonitor(object):
         self.saver.save(sess, self.checkpoint_path)
 
       tf.logging.info("Eval results at step {}: total_reward {}, episode_length {}".format(global_step, total_reward, episode_length))
+
+      f_reward.write(str(global_step) + " " + str(total_reward) + " " + str(episode_length) + "\n")
 
       return total_reward, episode_length
 
