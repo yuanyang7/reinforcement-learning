@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/yyang175/reinforcement-learning/DQN/experiments/Pong-v0/checkpoints/model"
+all_model_checkpoint_paths: "/home/yyang175/reinforcement-learning/DQN/experiments/Pong-v0/checkpoints/model"
