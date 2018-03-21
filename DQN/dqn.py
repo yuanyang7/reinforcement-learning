@@ -381,7 +381,7 @@ def deep_q_learning(sess,
         episode_summary = tf.Summary()
         episode_summary.value.add(simple_value=stats.episode_rewards[i_episode], node_name="episode_reward", tag="episode_reward")
         episode_summary.value.add(simple_value=stats.episode_lengths[i_episode], node_name="episode_length", tag="episode_length")
-        f_reward.write(str(i_episode) + " " + str(stats.episode_rewards[i_episode]) + " " + str(stats.episode_lengths[i_episode]))
+        f_reward.write(str(i_episode) + " " + str(stats.episode_rewards[i_episode]) + " " + str(stats.episode_lengths[i_episode]) + "\n")
         q_estimator.summary_writer.add_summary(episode_summary, total_t)
         q_estimator.summary_writer.flush()
 
