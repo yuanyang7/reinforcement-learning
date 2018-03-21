@@ -13,10 +13,11 @@ if "../" not in sys.path:
 from lib import plotting
 from collections import deque, namedtuple
 
-env = gym.envs.make("Breakout-v0")
+#env = gym.envs.make("Breakout-v0")
+env = gym.envs.make("Pong-v0")
 
 # Atari Actions: 0 (noop), 1 (fire), 2 (left) and 3 (right) are valid actions
-VALID_ACTIONS = [0, 1, 2, 3]
+VALID_ACTIONS = [1, 2, 3]
 
 class StateProcessor():
     """
@@ -369,6 +370,7 @@ def deep_q_learning(sess,
 
             state = next_state
             total_t += 1
+            env.render()
 
         # Add summaries to tensorboard
         episode_summary = tf.Summary()
@@ -409,12 +411,12 @@ with tf.Session() as sess:
                                     state_processor=state_processor,
                                     experiment_dir=experiment_dir,
                                     num_episodes=10000,
-                                    replay_memory_size=500000,
-                                    replay_memory_init_size=50000,
-                                    update_target_estimator_every=10000,
+                                    replay_memory_size=50000,#500000,
+                                    replay_memory_init_size=5000,#50000
+                                    update_target_estimator_every=1000,#10000
                                     epsilon_start=1.0,
                                     epsilon_end=0.1,
-                                    epsilon_decay_steps=500000,
+                                    epsilon_decay_steps=50000,#500000
                                     discount_factor=0.99,
                                     batch_size=32):
 
