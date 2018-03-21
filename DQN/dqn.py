@@ -13,6 +13,8 @@ if "../" not in sys.path:
 from lib import plotting
 from collections import deque, namedtuple
 
+f_reward= open("reward.txt","w+")
+
 #env = gym.envs.make("Breakout-v0")
 env = gym.envs.make("Pong-v0")
 
@@ -311,8 +313,10 @@ def deep_q_learning(sess,
         state = np.stack([state] * 4, axis=2)
         loss = None
 
+        reward_sum = 0
         # One step in the environment
         for t in itertools.count():
+
 
             # Epsilon for this time step
             epsilon = epsilons[min(total_t, epsilon_decay_steps-1)]
@@ -336,6 +340,7 @@ def deep_q_learning(sess,
             action_probs = policy(sess, state, epsilon)
             action = np.random.choice(np.arange(len(action_probs)), p=action_probs)
             next_state, reward, done, _ = env.step(VALID_ACTIONS[action])
+            reward_sum += reward
             next_state = state_processor.process(sess, next_state)
             next_state = np.append(state[:,:,1:], np.expand_dims(next_state, 2), axis=2)
 
@@ -376,6 +381,7 @@ def deep_q_learning(sess,
         episode_summary = tf.Summary()
         episode_summary.value.add(simple_value=stats.episode_rewards[i_episode], node_name="episode_reward", tag="episode_reward")
         episode_summary.value.add(simple_value=stats.episode_lengths[i_episode], node_name="episode_length", tag="episode_length")
+        f_reward.write(str(i_episode) + " " + str(stats.episode_rewards[i_episode]) + " " + str(stats.episode_lengths[i_episode]))
         q_estimator.summary_writer.add_summary(episode_summary, total_t)
         q_estimator.summary_writer.flush()
 
@@ -413,7 +419,7 @@ with tf.Session() as sess:
                                     num_episodes=10000,
                                     replay_memory_size=50000,#500000,
                                     replay_memory_init_size=5000,#50000
-                                    update_target_estimator_every=1000,#10000
+                                    update_target_estimator_every=10000,#10000
                                     epsilon_start=1.0,
                                     epsilon_end=0.1,
                                     epsilon_decay_steps=50000,#500000
