@@ -375,7 +375,7 @@ def deep_q_learning(sess,
 
             state = next_state
             total_t += 1
-            env.render()
+           # env.render()
 
         # Add summaries to tensorboard
         episode_summary = tf.Summary()
