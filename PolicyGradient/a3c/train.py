@@ -68,7 +68,7 @@ if not os.path.exists(CHECKPOINT_DIR):
 
 summary_writer = tf.summary.FileWriter(os.path.join(MODEL_DIR, "train"))
 
-with tf.device("/cpu:0"):
+with tf.device('/device:GPU:0'):
 
   # Keeps track of the number of updates we've performed
   global_step = tf.Variable(0, name="global_step", trainable=False)
@@ -112,7 +112,7 @@ with tf.device("/cpu:0"):
     summary_writer=summary_writer,
     saver=saver)
 
-with tf.Session() as sess:
+with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
   sess.run(tf.global_variables_initializer())
   coord = tf.train.Coordinator()
 
