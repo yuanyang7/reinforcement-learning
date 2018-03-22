@@ -346,7 +346,8 @@ def deep_q_learning(sess,
 
                 # If our replay memory is full, pop the first element
                 if len(replay_memory) == replay_memory_size:
-                    replay_memory.pop(0)
+                    for iii in range(1000):
+                        replay_memory.pop(0)
 
                 # Save transition to replay memory
                 replay_memory.append(Transition(state, action, reward, next_state, done))   
